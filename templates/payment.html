@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -63,7 +63,11 @@
       var socket = io.connect('{{host}}');
       socket.on('connect', function() {
           console.log('Websocket Connected');
-      })
+      });
+      socket.on('payment-confirmed-{{payment_id}}', function() {
+          console.log('Pagamento confirmado!');
+          location.reload();
+      });
     </script>
   </body>
 </html>

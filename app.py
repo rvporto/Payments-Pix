@@ -62,6 +62,7 @@ def pix_confirmation():
     
     payment.paid = True
     db.session.commit()
+    socketio.emit(f'payment-confirmed-{payment.id}')
 
     return jsonify({"message": "Pix payment created and confirmed"}), 201
 
@@ -69,6 +70,13 @@ def pix_confirmation():
 def payment_pix_page(payment_id):
     payment = Payment.query.get(payment_id)
     qr_code = payment.qr_code.replace('static/img/', '').replace('.png', '')
+
+    if payment.paid:
+        return render_template('confirmed_payment.html',
+                                 payment_id=payment.id,
+                                 value=payment.value)
+                        
+    
     return render_template('payment.html', 
                            payment_id=payment.id, 
                            value=payment.value, 
